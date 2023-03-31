@@ -1,4 +1,4 @@
-package entity
+package backendModels
 
 type UserResponse struct {
 	Id       int    `json:"id"`

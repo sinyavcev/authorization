@@ -20,8 +20,10 @@ func NewServer(config config.Config) *Server {
 
 func (s *Server) Run() {
 	router := chi.NewRouter()
+	addr := net.JoinHostPort(s.config.HttpServer.Host, s.config.HttpServer.Port)
+
 	srv := &http.Server{
-		Addr:           net.JoinHostPort(s.config.HttpServer.Host, s.config.HttpServer.Port),
+		Addr:           addr,
 		ReadTimeout:    s.config.HttpServer.ReadTimeout,
 		WriteTimeout:   s.config.HttpServer.ReadTimeout,
 		Handler:        router,
