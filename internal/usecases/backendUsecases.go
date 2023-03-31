@@ -1,4 +1,4 @@
-package backendUsecases
+package usecases
 
 type BackendUsecases interface {
 	Signin()
