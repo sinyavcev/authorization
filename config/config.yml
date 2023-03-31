@@ -1,0 +1,7 @@
+Config:
+    HttpServer:
+        port: "8000"
+        host: "localhost"
+        ReadTimeout: "10000",
+        WriteTimeout: "10000",
+
