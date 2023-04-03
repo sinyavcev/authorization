@@ -3,25 +3,25 @@ package app
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/sinyavcev/authorization/config"
-	httpController "github.com/sinyavcev/authorization/internal/controller/http"
+	Controller "github.com/sinyavcev/authorization/internal/controller/http"
 	"log"
 	"net"
 	"net/http"
 )
 
-type Server struct {
+type HttpServer struct {
 	config         config.Config
-	httpController *httpController.Controller
+	httpController *Controller.HttpController
 }
 
-func NewServer(config config.Config, httpController *httpController.Controller) *Server {
-	return &Server{
+func NewServer(config config.Config, httpController *Controller.HttpController) *HttpServer {
+	return &HttpServer{
 		config:         config,
 		httpController: httpController,
 	}
 }
 
-func (s *Server) Run() {
+func (s *HttpServer) Run() {
 	router := chi.NewRouter()
 	addr := net.JoinHostPort(s.config.HttpServer.Host, s.config.HttpServer.Port)
 

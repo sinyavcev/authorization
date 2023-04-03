@@ -22,7 +22,7 @@ func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
 	}
 }
 
-func (c *Controller) signUp(w http.ResponseWriter, r *http.Request) {
+func (c *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
 	var (
 		requestData backendModels.UserRequest
 	)
@@ -47,7 +47,7 @@ func (c *Controller) signUp(w http.ResponseWriter, r *http.Request) {
 	JSONResponse(w, http.StatusOK, data)
 }
 
-func (c *Controller) signIn(w http.ResponseWriter, r *http.Request) {
+func (c *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
 	var (
 		requestData backendModels.UserRequest
 	)
@@ -72,13 +72,13 @@ func (c *Controller) signIn(w http.ResponseWriter, r *http.Request) {
 	JSONResponse(w, http.StatusOK, data)
 }
 
-func (c *Controller) refreshToken(w http.ResponseWriter, req *http.Request) {
+func (c *HttpController) refreshToken(w http.ResponseWriter, req *http.Request) {
 
 }
 
-func (c *Controller) logout(w http.ResponseWriter, req *http.Request) {
+func (c *HttpController) logout(w http.ResponseWriter, req *http.Request) {
 
 }
 
-func (c *Controller) me(w http.ResponseWriter, req *http.Request) {
+func (c *HttpController) me(w http.ResponseWriter, req *http.Request) {
 }

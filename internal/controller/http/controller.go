@@ -5,15 +5,15 @@ import (
 	"github.com/sinyavcev/authorization/internal/usecases"
 )
 
-type Controller struct {
+type HttpController struct {
 	backendUsecases *usecases.Authorization
 }
 
-func NewController(backendUsecases *usecases.Authorization) *Controller {
-	return &Controller{backendUsecases: backendUsecases}
+func NewController(backendUsecases *usecases.Authorization) *HttpController {
+	return &HttpController{backendUsecases: backendUsecases}
 }
 
-func (c *Controller) SetupAuthRoutes(router *chi.Mux) {
+func (c *HttpController) SetupAuthRoutes(router *chi.Mux) {
 	baseURL := "/auth"
 	router.Route(baseURL, func(router chi.Router) {
 		router.Post("/signin", c.signUp)

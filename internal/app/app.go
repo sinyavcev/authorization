@@ -8,8 +8,8 @@ import (
 
 func Run(config config.Config) {
 	usecases := usecases.NewBackendUsecases()
-	conrtoller := http.NewController(usecases)
+	httpConrtoller := http.NewController(usecases)
 
-	server := NewServer(config, conrtoller)
+	server := NewServer(config, httpConrtoller)
 	server.Run()
 }
