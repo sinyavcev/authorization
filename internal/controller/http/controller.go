@@ -1,26 +1,32 @@
 package http
 
 import (
-	"github.com/sinyavcev/authorization/internal/usecases"
-
 	"github.com/go-chi/chi/v5"
 )
 
-type HttpController struct {
-	backendUsecases *usecases.Authorization
+type BackendUsecases interface {
+	signIn()
+	signUp()
+	me()
+	logout()
+	refresh()
 }
 
-func NewController(backendUsecases *usecases.Authorization) *HttpController {
+type HttpController struct {
+	backendUsecases BackendUsecases
+}
+
+func NewController(backendUsecases BackendUsecases) *HttpController {
 	return &HttpController{backendUsecases: backendUsecases}
 }
 
-func (c *HttpController) SetupAuthRoutes(router *chi.Mux) {
+func (h *HttpController) SetupAuthRoutes(router *chi.Mux) {
 	baseURL := "/auth"
 	router.Route(baseURL, func(router chi.Router) {
-		router.Post("/signin", c.signUp)
-		router.Get("/signup", c.signIn)
-		router.Post("/refresh", c.refreshToken)
-		router.Get("/me", c.me)
-		router.Get("/logout", c.logout)
+		router.Post("/signin", h.signUp)
+		router.Get("/signup", h.signIn)
+		router.Post("/refresh", h.refreshToken)
+		router.Get("/me", h.me)
+		router.Get("/logout", h.logout)
 	})
 }

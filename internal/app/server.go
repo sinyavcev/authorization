@@ -6,32 +6,32 @@ import (
 	"net/http"
 
 	"github.com/sinyavcev/authorization/config"
-	Controller "github.com/sinyavcev/authorization/internal/controller/http"
+	httpController "github.com/sinyavcev/authorization/internal/controller/http"
 
 	"github.com/go-chi/chi/v5"
 )
 
 type HttpServer struct {
 	config         config.Config
-	httpController *Controller.HttpController
+	httpController *httpController.HttpController
 }
 
-func NewServer(config config.Config, httpController *Controller.HttpController) *HttpServer {
+func NewServer(config config.Config, httpController *httpController.HttpController) *HttpServer {
 	return &HttpServer{
 		config:         config,
 		httpController: httpController,
 	}
 }
 
-func (s *HttpServer) Run() {
+func (h *HttpServer) Run() {
 	router := chi.NewRouter()
-	addr := net.JoinHostPort(s.config.HttpServer.Host, s.config.HttpServer.Port)
+	addr := net.JoinHostPort(h.config.HttpServer.Host, h.config.HttpServer.Port)
 
-	s.httpController.SetupAuthRoutes(router)
+	h.httpController.SetupAuthRoutes(router)
 	srv := &http.Server{
 		Addr:           addr,
-		ReadTimeout:    s.config.HttpServer.ReadTimeout,
-		WriteTimeout:   s.config.HttpServer.ReadTimeout,
+		ReadTimeout:    h.config.HttpServer.ReadTimeout,
+		WriteTimeout:   h.config.HttpServer.WriteTimeout,
 		Handler:        router,
 		MaxHeaderBytes: 1 << 20, // 1 MB
 	}

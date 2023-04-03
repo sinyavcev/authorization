@@ -8,9 +8,9 @@ import (
 	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
 )
 
-func (c *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
+func (h *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
 	var (
-		requestData backendModels.UserRequest
+		requestData backendModels.SignUpRequest
 	)
 
 	body, err := io.ReadAll(r.Body)
@@ -24,7 +24,7 @@ func (c *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := c.backendUsecases.Signin(requestData)
+	data, err := h.backendUsecases.signUp(requestData)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -33,9 +33,9 @@ func (c *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
 	JSONResponse(w, http.StatusOK, data)
 }
 
-func (c *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
+func (h *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
 	var (
-		requestData backendModels.UserRequest
+		requestData backendModels.SignInRequest
 	)
 
 	body, err := io.ReadAll(r.Body)
@@ -49,7 +49,7 @@ func (c *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := c.backendUsecases.Signin(requestData)
+	data, err := h.backendUsecases.signIn(requestData)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -58,12 +58,12 @@ func (c *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
 	JSONResponse(w, http.StatusOK, data)
 }
 
-func (c *HttpController) refreshToken(w http.ResponseWriter, req *http.Request) {
+func (h *HttpController) refreshToken(w http.ResponseWriter, req *http.Request) {
 
 }
-func (c *HttpController) logout(w http.ResponseWriter, req *http.Request) {
+func (h *HttpController) logout(w http.ResponseWriter, req *http.Request) {
 }
-func (c *HttpController) me(w http.ResponseWriter, req *http.Request) {
+func (h *HttpController) me(w http.ResponseWriter, req *http.Request) {
 }
 
 func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
