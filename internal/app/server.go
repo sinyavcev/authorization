@@ -14,7 +14,7 @@ type Server struct {
 	httpController *httpController.Controller
 }
 
-func NewServer(config config.Config, httpController *httpController.Controller) *Server {
+func NewServer(config config.Config, httpController httpController.Controller) *Server {
 	return &Server{
 		config:         config,
 		httpController: httpController,

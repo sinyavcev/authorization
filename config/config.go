@@ -7,7 +7,7 @@ import (
 )
 
 type Config struct {
-	HttpServer HttpServer
+	HttpServer
 }
 
 type HttpServer struct {
