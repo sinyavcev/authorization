@@ -1,6 +1,6 @@
 package usecases
 
-type BackendUsecases interface {
+type backendUsecases interface {
 	Signin()
 	Signup()
 	RefreshToken()
@@ -9,7 +9,7 @@ type BackendUsecases interface {
 }
 
 type Authorization struct {
-	BackendUsecases
+	backendUsecases
 }
 
 func NewBackendUsecases() *Authorization {

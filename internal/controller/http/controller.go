@@ -6,11 +6,11 @@ import (
 )
 
 type Controller struct {
-	BackendUsecases *usecases.Authorization
+	backendUsecases *usecases.Authorization
 }
 
 func NewController(backendUsecases *usecases.Authorization) *Controller {
-	return &Controller{BackendUsecases: backendUsecases}
+	return &Controller{backendUsecases: backendUsecases}
 }
 
 func (c *Controller) SetupAuthRoutes(router *chi.Mux) {

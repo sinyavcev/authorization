@@ -8,20 +8,18 @@ import (
 )
 
 func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
-	var Response = backendModels.Response{
-		Code:     status,
-		Response: data,
-	}
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(Response.Code)
+	w.WriteHeader(status)
 
-	resp, err := json.Marshal(Response)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Marshal error"))
-		return
+	if data != nil {
+		resp, err := json.Marshal(w)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Marshal error"))
+			return
+		}
+		w.Write(resp)
 	}
-	w.Write(resp)
 }
 
 func (c *Controller) signUp(w http.ResponseWriter, r *http.Request) {
@@ -40,16 +38,13 @@ func (c *Controller) signUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := c.BackendUsecases.Signup(requestData)
-
+	data, err := c.backendUsecases.Signin(requestData)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	if data != nil {
-		JSONResponse(w, http.StatusOK, data)
-	}
+	JSONResponse(w, http.StatusOK, data)
 }
 
 func (c *Controller) signIn(w http.ResponseWriter, r *http.Request) {
@@ -68,14 +63,13 @@ func (c *Controller) signIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := c.BackendUsecases.Signin(requestData)
+	data, err := c.backendUsecases.Signin(requestData)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	if data != nil {
-		JSONResponse(w, http.StatusOK, data)
-	}
+
+	JSONResponse(w, http.StatusOK, data)
 }
 
 func (c *Controller) refreshToken(w http.ResponseWriter, req *http.Request) {
