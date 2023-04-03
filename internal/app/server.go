@@ -1,12 +1,14 @@
 package app
 
 import (
-	"github.com/go-chi/chi/v5"
-	"github.com/sinyavcev/authorization/config"
-	Controller "github.com/sinyavcev/authorization/internal/controller/http"
 	"log"
 	"net"
 	"net/http"
+
+	"github.com/sinyavcev/authorization/config"
+	Controller "github.com/sinyavcev/authorization/internal/controller/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type HttpServer struct {

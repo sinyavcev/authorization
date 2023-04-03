@@ -2,25 +2,11 @@ package http
 
 import (
 	"encoding/json"
-	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
 	"io"
 	"net/http"
+
+	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
 )
-
-func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-
-	if data != nil {
-		resp, err := json.Marshal(w)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Marshal error"))
-			return
-		}
-		w.Write(resp)
-	}
-}
 
 func (c *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
 	var (
@@ -75,10 +61,22 @@ func (c *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
 func (c *HttpController) refreshToken(w http.ResponseWriter, req *http.Request) {
 
 }
-
 func (c *HttpController) logout(w http.ResponseWriter, req *http.Request) {
-
+}
+func (c *HttpController) me(w http.ResponseWriter, req *http.Request) {
 }
 
-func (c *HttpController) me(w http.ResponseWriter, req *http.Request) {
+func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+
+	if data != nil {
+		resp, err := json.Marshal(w)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Marshal error"))
+			return
+		}
+		w.Write(resp)
+	}
 }

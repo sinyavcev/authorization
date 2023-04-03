@@ -1,8 +1,9 @@
 package http
 
 import (
-	"github.com/go-chi/chi/v5"
 	"github.com/sinyavcev/authorization/internal/usecases"
+
+	"github.com/go-chi/chi/v5"
 )
 
 type HttpController struct {
