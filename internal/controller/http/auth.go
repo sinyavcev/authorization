@@ -2,80 +2,80 @@ package http
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
 	"io"
 	"net/http"
 )
 
-func JSONResponse(res http.ResponseWriter, message string, status int, data interface{}) {
-
+func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
 	var Response = backendModels.Response{
 		Code:     status,
-		Message:  message,
 		Response: data,
 	}
-	JSONResponse, jsonError := json.Marshal(Response)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(Response.Code)
 
-	if jsonError != nil {
-		res.WriteHeader(http.StatusInternalServerError)
-		res.Write([]byte("Marshal error"))
+	resp, err := json.Marshal(Response)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Marshal error"))
 		return
 	}
-	res.Header().Set("Content-Type", "application/json")
-	res.WriteHeader(Response.Code)
-	res.Write(JSONResponse)
-
+	w.Write(resp)
 }
 
-func (c *Controller) signUp(res http.ResponseWriter, req *http.Request) {
+func (c *Controller) signUp(w http.ResponseWriter, r *http.Request) {
 	var (
-		user         backendModels.UserRequest
-		userResponse backendModels.UserResponse
+		requestData backendModels.UserRequest
 	)
 
-	body, err := io.ReadAll(req.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		fmt.Errorf("parse body: %w", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
-	if err := json.Unmarshal(body, &user); err != nil {
-		JSONResponse(res, err.Error(), http.StatusInternalServerError, nil)
+	if err := json.Unmarshal(body, &requestData); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
-	userResponse, err = c.BackendUsecases.Signup(user)
+	data, err := c.BackendUsecases.Signup(requestData)
 
 	if err != nil {
-		fmt.Errorf("error: %w", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
-	JSONResponse(res, "success", http.StatusOK, userResponse)
+	if data != nil {
+		JSONResponse(w, http.StatusOK, data)
+	}
 }
 
-func (c *Controller) signIn(res http.ResponseWriter, req *http.Request) {
+func (c *Controller) signIn(w http.ResponseWriter, r *http.Request) {
 	var (
-		user         backendModels.UserRequest
-		userResponse backendModels.UserResponse
+		requestData backendModels.UserRequest
 	)
 
-	body, err := io.ReadAll(req.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		fmt.Errorf("parse body: %w", err)
-	}
-
-	if err := json.Unmarshal(body, &user); err != nil {
-		JSONResponse(res, err.Error(), http.StatusInternalServerError, nil)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	userResponse, err := c.BackendUsecases.Signin(user)
-
-	if err != nil {
-		JSONResponse(res, err.Error(), http.StatusInternalServerError, nil)
+	if err := json.Unmarshal(body, &requestData); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	JSONResponse(res, "success", http.StatusOK, userResponse)
+	data, err := c.BackendUsecases.Signin(requestData)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if data != nil {
+		JSONResponse(w, http.StatusOK, data)
+	}
 }
 
 func (c *Controller) refreshToken(w http.ResponseWriter, req *http.Request) {
@@ -87,5 +87,4 @@ func (c *Controller) logout(w http.ResponseWriter, req *http.Request) {
 }
 
 func (c *Controller) me(w http.ResponseWriter, req *http.Request) {
-
 }
