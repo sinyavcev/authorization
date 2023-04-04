@@ -1,6 +1,10 @@
 package backendModels
 
-type UserResponse struct {
+type SignInResponse struct {
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+}
+type SignUpResponse struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
 }

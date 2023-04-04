@@ -24,7 +24,7 @@ func (h *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := h.backendUsecases.signUp(requestData)
+	data, err := h.backendUsecases.SignUp(requestData)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -49,7 +49,7 @@ func (h *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := h.backendUsecases.signIn(requestData)
+	data, err := h.backendUsecases.SignIn(requestData)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -57,15 +57,6 @@ func (h *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
 
 	JSONResponse(w, http.StatusOK, data)
 }
-
-func (h *HttpController) refreshToken(w http.ResponseWriter, req *http.Request) {
-
-}
-func (h *HttpController) logout(w http.ResponseWriter, req *http.Request) {
-}
-func (h *HttpController) me(w http.ResponseWriter, req *http.Request) {
-}
-
 func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)

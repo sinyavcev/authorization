@@ -2,14 +2,12 @@ package http
 
 import (
 	"github.com/go-chi/chi/v5"
+	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
 )
 
 type BackendUsecases interface {
-	signIn()
-	signUp()
-	me()
-	logout()
-	refresh()
+	SignIn(data backendModels.SignInRequest) (*backendModels.SignInResponse, error)
+	SignUp(data backendModels.SignUpRequest) (*backendModels.SignInResponse, error)
 }
 
 type HttpController struct {
@@ -25,8 +23,5 @@ func (h *HttpController) SetupAuthRoutes(router *chi.Mux) {
 	router.Route(baseURL, func(router chi.Router) {
 		router.Post("/signin", h.signUp)
 		router.Get("/signup", h.signIn)
-		router.Post("/refresh", h.refreshToken)
-		router.Get("/me", h.me)
-		router.Get("/logout", h.logout)
 	})
 }
