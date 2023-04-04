@@ -1,35 +1,37 @@
 package app
 
 import (
-	"github.com/go-chi/chi/v5"
-	"github.com/sinyavcev/authorization/config"
-	httpController "github.com/sinyavcev/authorization/internal/controller/http"
 	"log"
 	"net"
 	"net/http"
+
+	"github.com/sinyavcev/authorization/config"
+	httpController "github.com/sinyavcev/authorization/internal/controller/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
-type Server struct {
+type HttpServer struct {
 	config         config.Config
-	httpController *httpController.Controller
+	httpController *httpController.HttpController
 }
 
-func NewServer(config config.Config, httpController *httpController.Controller) *Server {
-	return &Server{
+func NewServer(config config.Config, httpController *httpController.HttpController) *HttpServer {
+	return &HttpServer{
 		config:         config,
 		httpController: httpController,
 	}
 }
 
-func (s *Server) Run() {
+func (h *HttpServer) Run() {
 	router := chi.NewRouter()
-	addr := net.JoinHostPort(s.config.HttpServer.Host, s.config.HttpServer.Port)
+	addr := net.JoinHostPort(h.config.HttpServer.Host, h.config.HttpServer.Port)
 
-	s.httpController.SetupAuthRoutes(router)
+	h.httpController.SetupAuthRoutes(router)
 	srv := &http.Server{
 		Addr:           addr,
-		ReadTimeout:    s.config.HttpServer.ReadTimeout,
-		WriteTimeout:   s.config.HttpServer.ReadTimeout,
+		ReadTimeout:    h.config.HttpServer.ReadTimeout,
+		WriteTimeout:   h.config.HttpServer.WriteTimeout,
 		Handler:        router,
 		MaxHeaderBytes: 1 << 20, // 1 MB
 	}
