@@ -3,6 +3,7 @@ package http
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
+	"github.com/sirupsen/logrus"
 )
 
 type BackendUsecases interface {
@@ -12,10 +13,13 @@ type BackendUsecases interface {
 
 type HttpController struct {
 	backendUsecases BackendUsecases
+	logger          *logrus.Logger
 }
 
-func NewController(backendUsecases BackendUsecases) *HttpController {
-	return &HttpController{backendUsecases: backendUsecases}
+func NewController(backendUsecases BackendUsecases, logger *logrus.Logger) *HttpController {
+	return &HttpController{
+		backendUsecases: backendUsecases,
+		logger:          logger}
 }
 
 func (h *HttpController) SetupAuthRoutes(router *chi.Mux) {

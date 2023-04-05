@@ -15,17 +15,20 @@ func (h *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
+		h.logger.Errorf("Error parse body: %s", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	if err := json.Unmarshal(body, &requestData); err != nil {
+		h.logger.Errorf("Error unmarshal: %s", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	data, err := h.backendUsecases.SignUp(requestData)
 	if err != nil {
+		h.logger.Errorf("Error: %s", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -40,17 +43,20 @@ func (h *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
+		h.logger.Errorf("Error parse body: %s", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	if err := json.Unmarshal(body, &requestData); err != nil {
+		h.logger.Errorf("Error unmarshal: %s", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	data, err := h.backendUsecases.SignIn(requestData)
 	if err != nil {
+		h.logger.Errorf("Error: %s", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -64,6 +70,7 @@ func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
 	if data != nil {
 		resp, err := json.Marshal(w)
 		if err != nil {
+
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("Marshal error"))
 			return

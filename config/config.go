@@ -7,14 +7,19 @@ import (
 )
 
 type Config struct {
-	HttpServer
+	HttpConfig
+	LoggerConfig
 }
 
-type HttpServer struct {
+type HttpConfig struct {
 	Port         string
 	Host         string
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
+}
+
+type LoggerConfig struct {
+	LogLevel string
 }
 
 func LoadConfig(path string) (Config, error) {
