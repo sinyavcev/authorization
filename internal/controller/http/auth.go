@@ -70,9 +70,9 @@ func JSONResponse(w http.ResponseWriter, status int, data interface{}) {
 	if data != nil {
 		resp, err := json.Marshal(w)
 		if err != nil {
-
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Marshal error"))
+			errResp := []byte("Error json.Marshal")
+			w.Write(errResp)
 			return
 		}
 		w.Write(resp)

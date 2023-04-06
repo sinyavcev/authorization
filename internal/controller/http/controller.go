@@ -1,10 +1,8 @@
 package http
 
 import (
-	"github.com/sinyavcev/authorization/internal/common/logger"
-	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
-
 	"github.com/go-chi/chi/v5"
+	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
 )
 
 type BackendUsecases interface {
@@ -12,15 +10,19 @@ type BackendUsecases interface {
 	SignUp(data backendModels.SignUpRequest) (*backendModels.SignInResponse, error)
 }
 
-type HttpController struct {
-	backendUsecases BackendUsecases
-	logger          logger.Logger
+type Logger interface {
+	Errorf(format string, args ...interface{})
 }
 
-func NewController(backendUsecases BackendUsecases, logger *logger.Logger) *HttpController {
+type HttpController struct {
+	backendUsecases BackendUsecases
+	logger          Logger
+}
+
+func NewController(backendUsecases BackendUsecases, logger Logger) *HttpController {
 	return &HttpController{
 		backendUsecases: backendUsecases,
-		logger:          *logger}
+		logger:          logger}
 }
 
 func (h *HttpController) SetupAuthRoutes(router *chi.Mux) {
