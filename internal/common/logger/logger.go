@@ -1,21 +1,27 @@
 package logger
 
 import (
-	"github.com/sinyavcev/authorization/config"
-	"github.com/sirupsen/logrus"
+	"fmt"
 	"os"
+
+	"github.com/sinyavcev/authorization/config"
+
+	"github.com/sirupsen/logrus"
 )
 
-func NewLogger(config config.LoggerConfig) *logrus.Logger {
+type Logger struct {
+	*logrus.Logger
+}
+
+func NewLogger(config config.LoggerConfig) (*Logger, error) {
 	log := logrus.New()
 
 	level, err := logrus.ParseLevel(config.LogLevel)
 	if err != nil {
-		log.Fatalf("Failed to set logging level: %s", err.Error())
-	} else {
-		log.SetLevel(level)
+		return &Logger{log}, fmt.Errorf("logrus.ParseLevel: %v", err.Error())
 	}
+	log.SetLevel(level)
 	log.SetFormatter(&logrus.JSONFormatter{})
 	log.SetOutput(os.Stdout)
-	return log
+	return &Logger{log}, nil
 }
