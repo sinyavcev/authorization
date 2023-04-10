@@ -18,7 +18,7 @@ func NewLogger(config config.LoggerConfig) (*Logger, error) {
 
 	level, err := logrus.ParseLevel(config.LogLevel)
 	if err != nil {
-		return &Logger{log}, fmt.Errorf("logrus.ParseLevel: %v", err.Error())
+		return &Logger{log}, fmt.Errorf("logrus.ParseLevel: %w", err)
 	}
 	log.SetLevel(level)
 	log.SetFormatter(&logrus.JSONFormatter{})
