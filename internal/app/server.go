@@ -25,13 +25,13 @@ func NewServer(config config.Config, httpController *httpController.HttpControll
 
 func (h *HttpServer) Run() {
 	router := chi.NewRouter()
-	addr := net.JoinHostPort(h.config.HttpServer.Host, h.config.HttpServer.Port)
+	addr := net.JoinHostPort(h.config.HttpConfig.Host, h.config.HttpConfig.Port)
 
 	h.httpController.SetupAuthRoutes(router)
 	srv := &http.Server{
 		Addr:           addr,
-		ReadTimeout:    h.config.HttpServer.ReadTimeout,
-		WriteTimeout:   h.config.HttpServer.WriteTimeout,
+		ReadTimeout:    h.config.HttpConfig.ReadTimeout,
+		WriteTimeout:   h.config.HttpConfig.WriteTimeout,
 		Handler:        router,
 		MaxHeaderBytes: 1 << 20, // 1 MB
 	}

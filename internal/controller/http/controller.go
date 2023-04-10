@@ -10,12 +10,19 @@ type BackendUsecases interface {
 	SignUp(data backendModels.SignUpRequest) (*backendModels.SignInResponse, error)
 }
 
-type HttpController struct {
-	backendUsecases BackendUsecases
+type Logger interface {
+	Errorf(format string, args ...interface{})
 }
 
-func NewController(backendUsecases BackendUsecases) *HttpController {
-	return &HttpController{backendUsecases: backendUsecases}
+type HttpController struct {
+	backendUsecases BackendUsecases
+	logger          Logger
+}
+
+func NewController(backendUsecases BackendUsecases, logger Logger) *HttpController {
+	return &HttpController{
+		backendUsecases: backendUsecases,
+		logger:          logger}
 }
 
 func (h *HttpController) SetupAuthRoutes(router *chi.Mux) {
