@@ -8,7 +8,7 @@ import (
 	"github.com/sinyavcev/authorization/internal/models/entity/backendModels"
 )
 
-func (h *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
+func (h *HttpController) SignUp(w http.ResponseWriter, r *http.Request) {
 	var (
 		requestData backendModels.SignUpRequest
 	)
@@ -36,7 +36,7 @@ func (h *HttpController) signUp(w http.ResponseWriter, r *http.Request) {
 	JSONResponse(w, http.StatusOK, data)
 }
 
-func (h *HttpController) signIn(w http.ResponseWriter, r *http.Request) {
+func (h *HttpController) SignIn(w http.ResponseWriter, r *http.Request) {
 	var (
 		requestData backendModels.SignInRequest
 	)
