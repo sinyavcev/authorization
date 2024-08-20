@@ -6,8 +6,8 @@ import (
 )
 
 type BackendUsecases interface {
-	SignIn(data backendModels.SignInRequest) (*backendModels.SignInResponse, error)
-	SignUp(data backendModels.SignUpRequest) (*backendModels.SignInResponse, error)
+	SignUp(data *backendModels.SignUpRequest) (*backendModels.SignUpResponse, error)
+	SignIn(data *backendModels.SignInRequest) (*backendModels.SignInResponse, error)
 }
 
 type Logger interface {
@@ -21,14 +21,13 @@ type HttpController struct {
 
 func NewController(backendUsecases BackendUsecases, logger Logger) *HttpController {
 	return &HttpController{
-		backendUsecases: backendUsecases,
-		logger:          logger}
+		logger: logger}
 }
 
 func (h *HttpController) SetupAuthRoutes(router *chi.Mux) {
 	baseURL := "/auth"
 	router.Route(baseURL, func(router chi.Router) {
-		router.Post("/signin", h.signUp)
-		router.Get("/signup", h.signIn)
+		router.Post("/signin", h.SignUp)
+		router.Get("/signup", h.SignIn)
 	})
 }

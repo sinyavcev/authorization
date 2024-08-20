@@ -10,6 +10,7 @@ import (
 type Config struct {
 	HttpConfig
 	LoggerConfig
+	PostgresConfig
 }
 
 type HttpConfig struct {
@@ -21,6 +22,14 @@ type HttpConfig struct {
 
 type LoggerConfig struct {
 	LogLevel string
+}
+
+type PostgresConfig struct {
+	Port       string
+	Host       string
+	User       string
+	DBName     string
+	DBPassword string
 }
 
 func LoadConfig(path string) (Config, error) {
